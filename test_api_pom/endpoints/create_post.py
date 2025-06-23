@@ -10,11 +10,9 @@ class CreatePostClass(Endpoint):
     @allure.step('Creating a new post')
     def create_new_post(self, payload, headers=None):
         headers = headers if headers else self.headers
-        response = requests.post(self.url, json=payload, headers=headers)
-        self.json = response.json()
+        self.response = requests.post(self.url, json=payload, headers=headers)
+        self.json = self.response.json()
         return self.response
 
-    @allure.step('Check that 400 error received')
-    def assert_bad_request(self):
-        assert self.response.status_code == 400
+
 
