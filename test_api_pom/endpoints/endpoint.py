@@ -1,5 +1,6 @@
 import allure
 import requests
+from pydantic import ValidationError
 class Endpoint:
     url = 'https://jsonplaceholder.typicode.com/posts'
     response = None
@@ -45,3 +46,15 @@ class Endpoint:
         allure.attach(self.response.text, name = "Response Body", attachment_type = allure.attachment_type.JSON)
         allure.attach(str(self.response.elapsed.total_seconds()), name = "Response Time",
                       attachment_type = allure.attachment_type.TEXT)
+
+    @allure.step('Validating response schema')
+    def validate_response_schema(self, model_class):
+        try:
+            print('Validating Post Response Model')
+            model_class(**self.json)
+            print("Schema validated successfully")
+        except ValidationError as e:
+            print("Schema validation failed:")
+            print(e)
+            raise
+

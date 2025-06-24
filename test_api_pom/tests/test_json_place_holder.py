@@ -1,4 +1,5 @@
 import pytest
+from test_api_pom.models.post_response_model import PostResponseModel
 
 TEST_DATA = [
     {"title": "My title", "body": "my body", "userId": 1},
@@ -23,11 +24,7 @@ def test_post_with_negative_data(create_post_endpoint_fixture, data):
     create_post_endpoint_fixture.assert_response_title_is_correct(data['title'])
 
 def test_put_a_post(update_post_endpoint_fixture):
-    payload = {
-        "title": "UpdatedTitle",
-        "body": "UpdatedBody",
-        "userId": 2
-    }
+    payload = {"title": "UpdatedTitle", "body": "UpdatedBody", "userId": 2}
     update_post_endpoint_fixture.make_changes_in_post(42, payload)
     update_post_endpoint_fixture.assert_response_title_is_correct(payload['title'])
     update_post_endpoint_fixture.assert_response_code_is(200)
@@ -37,3 +34,7 @@ def test_get_specific_endpoint(get_specific_endpoint_fixture):
     get_specific_endpoint_fixture.assert_response_code_is(200)
     get_specific_endpoint_fixture.assert_request_returned_within_seconds(1)
 
+def test_post_schema_validation(create_post_endpoint_fixture):
+    payload = {"title": "Hello", "body": "world", "userId": 1}
+    create_post_endpoint_fixture.create_new_post(payload)
+    create_post_endpoint_fixture.validate_response_schema(PostResponseModel)
