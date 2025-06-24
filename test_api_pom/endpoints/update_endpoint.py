@@ -1,14 +1,10 @@
-import requests
 import allure
 from test_api_pom.endpoints.endpoint import Endpoint
 
 class UpdatePostClass(Endpoint):
 
+    postId = 5
+
     @allure.step('Updating a post')
-    def make_changes_in_post(self, post_id, payload, headers=None):
-        headers = headers if headers else self.headers
-        self.response = requests.put(f'{self.url}/{post_id}', json=payload, headers=headers)
-        self.json = self.response.json()
-        print('Generating full Allure request logs')
-        self.log_response()
-        return self.response
+    def make_changes_in_post(self, requestId, payload, headers = None):
+        self.send_request('PUT', self.url, requestId, payload, headers)

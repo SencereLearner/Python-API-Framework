@@ -1,10 +1,26 @@
 import allure
-
+import requests
 class Endpoint:
     url = 'https://jsonplaceholder.typicode.com/posts'
     response = None
     json = None
     headers = {'Content-type': 'application/json'}
+
+    def send_request(self, method, url, request_id = None, payload = None, headers = None):
+        headers = headers if headers else self.headers
+        match method.upper():
+            case 'GET':
+                self.response = requests.get(f'{self.url}/{request_id}', headers = headers)
+            case 'POST':
+                self.response = requests.post(url, json = payload, headers = headers)
+            case 'PUT':
+                self.response = requests.put(f'{self.url}/{request_id}', json = payload, headers = headers)
+            case 'DELETE':
+                self.response = requests.delete(url, headers = headers)
+            case _:
+                raise ValueError(f"Unsupported HTTP method: {method}")
+        self.json = self.response.json()
+        return self.response
 
     @allure.step('Verifying response title is correct')
     def assert_response_title_is_correct(self, title):

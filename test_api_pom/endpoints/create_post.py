@@ -1,4 +1,3 @@
-import requests
 import allure
 from test_api_pom.endpoints.endpoint import Endpoint
 
@@ -8,13 +7,8 @@ class CreatePostClass(Endpoint):
 # a class: create_post_endpoint_fixture = CreatePostClass()
 
     @allure.step('Creating a new post')
-    def create_new_post(self, payload, headers=None):
-        headers = headers if headers else self.headers
-        self.response = requests.post(self.url, json=payload, headers=headers)
-        self.json = self.response.json()
-        print('Generating full Allure request logs')
-        self.log_response()
-        return self.response
+    def create_new_post(self, payload, headers = None):
+        self.send_request('POST', self.url, payload=payload, headers=headers)
 
 
 

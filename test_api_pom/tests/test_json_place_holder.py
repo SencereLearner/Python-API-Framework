@@ -33,7 +33,7 @@ def test_put_a_post(update_post_endpoint_fixture):
     update_post_endpoint_fixture.assert_response_code_is_200()
 
 def test_get_specific_endpoint(get_specific_endpoint_fixture):
-    get_specific_endpoint_fixture.get__specific_endpoint(5)
+    get_specific_endpoint_fixture.get_specific_endpoint(5)
     get_specific_endpoint_fixture.assert_response_code_is_200()
     get_specific_endpoint_fixture.assert_request_returned_within_seconds(1)
 
