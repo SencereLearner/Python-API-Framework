@@ -9,4 +9,6 @@ class UpdatePostClass(Endpoint):
         headers = headers if headers else self.headers
         self.response = requests.put(f'{self.url}/{post_id}', json=payload, headers=headers)
         self.json = self.response.json()
+        print('Generating full Allure request logs')
+        self.log_response()
         return self.response

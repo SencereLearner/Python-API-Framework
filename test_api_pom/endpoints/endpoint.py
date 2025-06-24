@@ -21,3 +21,10 @@ class Endpoint:
     @allure.step('Check that request returned within 2 seconds')
     def assert_request_returned_within_seconds(self, seconds):
         assert self.response.elapsed.total_seconds() < seconds
+
+    @allure.step('Logging full response')
+    def log_response(self):
+        allure.attach(str(self.response.status_code), name = "Status Code", attachment_type = allure.attachment_type.TEXT)
+        allure.attach(self.response.text, name = "Response Body", attachment_type = allure.attachment_type.JSON)
+        allure.attach(str(self.response.elapsed.total_seconds()), name = "Response Time",
+                      attachment_type = allure.attachment_type.TEXT)

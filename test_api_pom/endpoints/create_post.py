@@ -12,6 +12,8 @@ class CreatePostClass(Endpoint):
         headers = headers if headers else self.headers
         self.response = requests.post(self.url, json=payload, headers=headers)
         self.json = self.response.json()
+        print('Generating full Allure request logs')
+        self.log_response()
         return self.response
 
 

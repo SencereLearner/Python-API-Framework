@@ -12,4 +12,6 @@ class GetEndpointClass(Endpoint):
         self.json = self.response.json()
         print(f'Getting endpoint ID {get_id} response: ', self.response)
         print(f'Request {get_id} took {self.response.elapsed.total_seconds()} seconds: ')
+        print('Generating full Allure request logs')
+        self.log_response()
         return self.response
