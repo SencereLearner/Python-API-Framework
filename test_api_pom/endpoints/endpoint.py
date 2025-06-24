@@ -17,3 +17,7 @@ class Endpoint:
     @allure.step('Check that response error code is received')
     def assert_bad_request_code_is_not_200(self):
         assert self.response.status_code != 200
+
+    @allure.step('Check that request returned within 2 seconds')
+    def assert_request_returned_within_seconds(self, seconds):
+        assert self.response.elapsed.total_seconds() < seconds
