@@ -557,6 +557,38 @@ def test_regression_one():
     print('Regression test one')
 ######################## ALLURE REPORT ################################################
 
+######################## LOCUST PERFORMANCE TESTING ################################################
+# The most basic way to check request response time without any external modules:
+from datetime import datetime
+start = datetime.now()
+response = requests.get(f'https://jsonplaceholder.typicode.com/posts/{21}')
+end = datetime.now()
+print(f'Request response code is: {response} and it took {end - start} to finish')
+
+# Locust is an external Python module. Need to install it:
+# pip install locust
+# in terminal type: locust and click generated locust interface url from terminal
+
+from locust import task, HttpUser
+import random
+
+class MemeUser(HttpUser):
+    token = None
+
+    def on_start(self):
+        response = self.client.post('/authorize', json={'name': 'Eugeny'})
+        self.token = response.json()['token']
+
+    @task(1)
+    def get_all_memes(self):
+        self.client.get('/meme', headers={'Authorization': self.token})
+
+    @task(3)
+    def get_one_meme(self):
+        self.client.get(f'/meme/{random.choice([21, 29, 276, 239])}', headers={'Authorization': self.token})
+# https://prnt.sc/QrnIooZh6iUV
+######################## LOCUST PERFORMANCE TESTING ################################################
+
 
 
 
